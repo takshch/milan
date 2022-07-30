@@ -4,7 +4,7 @@ const acceptFriendRequest = async (req, res) => {
   const { owner, username } = req.body;
 
   try {
-    const data = { usernameSecond: owner, usernameFirst: username };
+    const data = { receiverUsername: owner, senderUsername: username };
     const result = await friendRequestService.acceptFriendRequest(data);
 
     if (result) {
@@ -18,4 +18,20 @@ const acceptFriendRequest = async (req, res) => {
   }
 };
 
-module.exports = { acceptFriendRequest };
+const sendFriendRequest = async (req, res) => {
+  const { owner, username } = req.body;
+
+  try {
+    const data = { senderUsername: owner, receiverUsername: username };
+    const { code } = await friendRequestService.sendFriendRequest(data);
+    if (code) {
+      return res.status(200).send({ code });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  res.status(500).send();
+};
+
+module.exports = { acceptFriendRequest, sendFriendRequest };
