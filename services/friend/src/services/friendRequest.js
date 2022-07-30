@@ -6,6 +6,12 @@ const CYPHER_CHECK_WANTS_RELATIONSHIP = `
   RETURN EXISTS((sender)-[:WANTS_TO_BE_FRIEND_WITH]->(receiver))
 `;
 
+const CYPHER_CHECK_WANTS_RELATIONSHIP_REVERSE = `
+  MATCH (sender: User { username: $senderUsername })
+  MATCH (receiver: User { username: $receiverUsername })
+  RETURN EXISTS((receiver)-[:WANTS_TO_BE_FRIEND_WITH]->(sender))
+`;
+
 const CYPHER_DELETE_WANTS_RELATIONSHIP = `
   MATCH (sender: User { username: $senderUsername })
   MATCH (receiver: User { username: $receiverUsername })
@@ -81,6 +87,7 @@ const sendFriendRequest = async ({ senderUsername, receiverUsername }) => {
     const parameters = { senderUsername, receiverUsername };
 
     {
+      // check if both users are already a friends or not
       const result = await txc.run(CYPHER_CHECK_FRIENDSHIP, parameters);
       const record = result.records[0];
       const hasFriendship = record.get(0);
@@ -91,6 +98,7 @@ const sendFriendRequest = async ({ senderUsername, receiverUsername }) => {
     }
 
     {
+      // check if friend request is already sent or not
       const result = await txc.run(CYPHER_CHECK_WANTS_RELATIONSHIP, parameters);
 
       const record = result.records[0];
@@ -102,11 +110,21 @@ const sendFriendRequest = async ({ senderUsername, receiverUsername }) => {
     }
 
     {
+      // check if the user have other user's friend request or not
+      // if yes, then accept friend request
+      const result = await txc.run(CYPHER_CHECK_WANTS_RELATIONSHIP_REVERSE, parameters);
+      const record = result.records[0];
+      const hasRelationship = record.get(0);
+
+      if (hasRelationship) {
+        return { code: 'accept-friend-request-instead' };
+      }
+    }
+
+    {
       const result = await txc.run(CYPHER_MAKE_FRIEND_REQUEST, parameters);
       const record = result.records[0];
       const status = record.get(0);
-
-      console.log(result, record, status);
 
       let msg;
 

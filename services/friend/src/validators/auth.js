@@ -1,7 +1,7 @@
 const validateAuth = (req, res, next) => {
-  const { username } = req.body;
+  const { owner } = req.body;
 
-  if (username) {
+  if (owner) {
     next();
   } else {
     res.status(401).send({ error: 'unauthorized' });

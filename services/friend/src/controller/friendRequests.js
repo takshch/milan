@@ -1,10 +1,10 @@
 const friendRequestsService = require('../services/friendRequests');
 
 const fetchRecievedRequests = async (req, res) => {
-  const { username } = req.body;
+  const { owner } = req.body;
 
   try {
-    const users = await friendRequestsService.fetchReceivedRequests(username);
+    const users = await friendRequestsService.fetchReceivedRequests(owner);
     res.status(200).send(users);
   } catch (e) {
     console.log(e);
@@ -13,10 +13,10 @@ const fetchRecievedRequests = async (req, res) => {
 };
 
 const fetchSendedRequests = async (req, res) => {
-  const { username } = req.body;
+  const { owner } = req.body;
 
   try {
-    const users = await friendRequestsService.fetchSendedRequests(username);
+    const users = await friendRequestsService.fetchSendedRequests(owner);
     res.status(200).send(users);
   } catch (e) {
     console.log(e);
