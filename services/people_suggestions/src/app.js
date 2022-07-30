@@ -1,13 +1,11 @@
 const express = require('express');
-const setupLogging = require('./setupLogging');
+const router = require('./routes/index');
+const initialize = require('./initialize');
 
 const app = express();
 
-setupLogging(app);
+initialize(app);
 
-app.use('*', (req, res) => {
-  console.log({ ...req.params });
-  res.status(200).send('People Suggestions Service called');
-});
+app.use(router);
 
 module.exports = app;
