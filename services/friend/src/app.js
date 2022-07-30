@@ -1,13 +1,13 @@
 const express = require('express');
 const setupLogging = require('./setupLogging');
+const router = require('./routes/index');
 
 const app = express();
 
+app.use(express.json());
+
 setupLogging(app);
 
-app.use('*', (req, res) => {
-  console.log({ ...req.params });
-  res.status(200).send('Friend Service called');
-});
+app.use(router);
 
 module.exports = app;

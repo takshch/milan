@@ -1,3 +1,9 @@
 {
-  "port": 3003
+  "port": 3003,
+  "neo4j": {
+    "url": "neo4j://localhost:7687",
+    "database": "milan",
+    "username": "neo4j",
+    "password": "takshch"
+  }
 }
