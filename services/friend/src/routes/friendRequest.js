@@ -1,7 +1,8 @@
 const express = require('express');
+const { acceptFriendRequest } = require('../controller/friendRequest');
 
 const router = express.Router();
 
-router.get('/', () => {});
+router.post('/accept', acceptFriendRequest);
 
 module.exports = router;

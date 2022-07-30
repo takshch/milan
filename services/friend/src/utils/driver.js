@@ -45,4 +45,18 @@ const write = (cypher, params = {}, database = db) => {
   });
 };
 
-module.exports = { read, write };
+const writeTransaction = (func, database = db) => {
+  const session = driver.session({ database });
+
+  const txcPromise = session.writeTransaction(func);
+
+  return txcPromise.then((res) => {
+    return res;
+  }).catch(e => {
+    throw e;
+  }).finally(() => {
+    session.close();
+  });
+};
+
+module.exports = { read, write, writeTransaction };
