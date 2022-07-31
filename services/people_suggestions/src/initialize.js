@@ -4,7 +4,10 @@ const { connect } = require('./utils/mongoose');
 
 const initialize = (app) => {
   // setup logging
-  app.use(morgan('combined'));
+  app.use(morgan('combined', {
+    // disable logging in testing
+    skip: () => process.env.NODE_ENV === 'testing'
+  }));
 
   app.use(queryParser({
     parseNull: true,

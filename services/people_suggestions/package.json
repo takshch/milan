@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.js"
+    "dev": "NODE_ENV=development nodemon src/server.js",
+    "test": "NODE_ENV=testing mocha 'tests' --recursive"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +17,9 @@
     "joi": "^17.6.0",
     "mongoose": "^6.5.0",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "mocha": "^10.0.0",
+    "supertest": "^6.2.4"
   }
 }
