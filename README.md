@@ -1,3 +1,6 @@
+# Note
+It is in development
+
 # Milan
 Milan is the social media network where people connects.
 
